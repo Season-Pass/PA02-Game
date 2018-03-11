@@ -163,8 +163,8 @@ This file has been modified for PA02.
 			scene.add(ground);
 			var skybox = createSkyBox('sky.jpg',1);
 			scene.add(skybox);
-			//var barrier = createBarrier();
-			//scene.add(barrier);
+			var barrier = createBarrier();
+			scene.add(barrier);
 
 			// create the avatar
 			createAvatar2(); // attempt at loading suzanne
@@ -363,18 +363,17 @@ This file has been modified for PA02.
 		-Nadia Kubatin
 	*/
 	function createBarrier(){
-		var geometry2 = new THREE.SphereGeometry(81, 80, 80, 0, 3.2);
+		var geometry2 = new THREE.CylinderGeometry(81, 79, 20, 80, 80, true);
 		var material2 = new THREE.MeshPhongMaterial( {
                           color: 0xcce6ff,
                           transparent: true,
-                          opacity: 1,
+                          opacity: 0,
                           shininess: 100,
                           reflectivity: .5,
                           side:THREE.DoubleSide
                         } );
 		var pmaterial = new Physijs.createMaterial(material2,0.9,0.5);
 		var mesh2 = new Physijs.ConcaveMesh( geometry2, pmaterial, 0 );
-		mesh2.rotateX(THREE.Math.degToRad( -90 ));
 		mesh2.receiveShadow = false;
 		return mesh2;
 	}
