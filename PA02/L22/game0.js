@@ -503,41 +503,6 @@ This file has been modified for PA02.
 
 
 
-	function dohSound(file){             // sound whenever you lose health
-		// create an AudioListener and add it to the camera
-		var listener = new THREE.AudioListener();
-		camera.add( listener );
-
-		var doh = new THREE.Audio(listener);
-
-		var audioLoader = new THREE.AudioLoader();
-		audioLoader.load( '../sounds/'+file, function( buffer ) {
-			doh.setBuffer( buffer );
-			doh.setLoop( false );
-			doh.setVolume( 0.5 );
-			doh.play();
-		});
-	}
-
-
-
-	function loserSound(file){             // sound when you lose
-
-		var loooser = new THREE.AudioListener();
-		camera.add( loooser );
-
-		var loser = new THREE.Audio( loooser );
-		// global audio source
-		var loserLoader = new THREE.AudioLoader();
-		loserLoader.load(  '../sounds/'+file, function( buffer ){
-			loser.setBuffer( buffer );
-			loser.setLoop( false );
-			loser.setVolume( 0.50 );
-			loser.play();
-		});
-	}
-
-
 
 
 	var clock;
