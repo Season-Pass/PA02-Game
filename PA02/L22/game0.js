@@ -490,7 +490,7 @@ This file has been modified for PA02.
 
 		// load a sound and set it as the Audio object's buffer
 		var audioLoader = new THREE.AudioLoader();
-		audioLoader.load( '/sounds/'+file, function( buffer ) {
+		audioLoader.load( '../sounds/'+file, function( buffer ) {
 			sound.setBuffer( buffer );
 			sound.setLoop( false );
 			sound.setVolume( 0.5 );
