@@ -182,6 +182,7 @@ This file has been modified for PA02.
 
 			// add game objects
 			addBalls();
+			addBombs();
 
 			cone = createConeMesh(4,6);
 			cone.position.set(10,3,7);
@@ -250,6 +251,25 @@ This file has been modified for PA02.
 				}
 			)
 		}
+	}
+	
+	//Make red balls that kill the player when the avatar touches them
+	function addBombs(){
+		var numBombs = 3;
+		for(i=0; i < numBombs; i++){
+			var bomb = createBall();
+			bomb.material.color.setHex(0xcd0000);
+			bomb.position.set(randN(20)+15,30,randN(20)+15);
+			scene.add(bomb);
+		}
+		//kill avatar
+		bomb.addEventListener( 'collision',
+			function( other_object, relative_velocity, relative_rotation, contact_normal ) {
+				if(other_object == avatar){
+					gameState.scene='gameover';
+				}
+			}	
+		)
 	}
 
 
@@ -534,6 +554,7 @@ This file has been modified for PA02.
 			gameState.score = 0;
 			gameState.health = 10;
 			addBalls();
+			addBombs();
 			return;
 		}
 
@@ -543,6 +564,7 @@ This file has been modified for PA02.
 			gameState.score = 0;
 			gameState.health = 10;
 			addBalls();
+			addBombs();
 			return;
 		}
 
