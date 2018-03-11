@@ -241,7 +241,7 @@ This file has been modified for PA02.
 							gameState.scene='youwon';
 						}
 						// make the ball drop below the scene ..
-						// threejs doesn't let us remove it from the schene...
+						// threejs doesn't let us remove it from the scene...
 						this.position.y = this.position.y - 100;
 						this.__dirtyPosition = true;
 					}
