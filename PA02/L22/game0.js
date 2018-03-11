@@ -213,7 +213,7 @@ This file has been modified for PA02.
 	  var homer = new THREE.Audio( doh );
 	  // global audio source
 	  var homerLoader = new THREE.AudioLoader();
-	  homerLoader.load( 'libs/Sounds/Doh.mp3', function(buffer){
+	  homerLoader.load( 'sounds/Doh.mp3', function(buffer){
 	    homer.setBuffer( buffer );
 	    homer.setLoop( false );
 	    homer.setVolume( 0.20 );
@@ -229,7 +229,7 @@ This file has been modified for PA02.
 	  var loser = new THREE.Audio( loooser );
 	  // global audio source
 	  var loserLoader = new THREE.AudioLoader();
-	  homerLoader.load( 'libs/Sounds/Loser.mp3', function(buffer){
+	  homerLoader.load( 'sounds/Loser.mp3', function(buffer){
 	    loser.setBuffer( buffer );
 	    loser.setLoop( false );
 	    loser.setVolume( 0.20 );
