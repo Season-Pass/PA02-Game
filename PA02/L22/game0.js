@@ -79,8 +79,8 @@ This file has been modified for PA02.
 		Loads physics for the game
 	*/
   function initPhysijs(){
-    Physijs.scripts.worker = '/js/physijs_worker.js';
-    Physijs.scripts.ammo = '/js/ammo.js';
+    Physijs.scripts.worker = '../js/physijs_worker.js';
+    Physijs.scripts.ammo = '../js/ammo.js';
   }
 
 
@@ -163,8 +163,8 @@ This file has been modified for PA02.
 			scene.add(ground);
 			var skybox = createSkyBox('sky.jpg',1);
 			scene.add(skybox);
-			var barrier = createBarrier();
-			scene.add(barrier);
+			//var barrier = createBarrier();
+			//scene.add(barrier);
 
 			// create the avatar
 			createAvatar2(); // attempt at loading suzanne
