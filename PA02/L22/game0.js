@@ -195,6 +195,9 @@ This file has been modified for PA02.
           gameState.health = gameState.health-1;
 					if (gameState.health==0) {
 						gameState.scene='gameover';
+						loserSound();
+					} else {
+						dohSound();
 					}
 					gameState.collide = true;
         }
@@ -203,8 +206,36 @@ This file has been modified for PA02.
 			//console.dir(npc);
 			//playGameMusic();
 	}
+	function dohSound(){             // sound whenever you lose health
+	  doh = new THREE.AudioListener();
+	  scene.add( doh );
+
+	  var homer = new THREE.Audio( doh );
+	  // global audio source
+	  var homerLoader = new THREE.AudioLoader();
+	  homerLoader.load( 'libs/Sounds/Doh.mp3', function(buffer){
+	    homer.setBuffer( buffer );
+	    homer.setLoop( false );
+	    homer.setVolume( 0.20 );
+	    homer.play();
+	  });
+	}
 
 
+	function loserSound(){             // sound when you lose
+	  loooser = new THREE.AudioListener();
+	  scene.add( doh );
+
+	  var loser = new THREE.Audio( loooser );
+	  // global audio source
+	  var loserLoader = new THREE.AudioLoader();
+	  homerLoader.load( 'libs/Sounds/Loser.mp3', function(buffer){
+	    loser.setBuffer( buffer );
+	    loser.setLoop( false );
+	    loser.setVolume( 0.20 );
+	    loser.play();
+	  });
+	}
 
 	/*
 		Produces a random number to set a random location
