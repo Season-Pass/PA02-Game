@@ -195,9 +195,9 @@ This file has been modified for PA02.
           gameState.health = gameState.health-1;
 					if (gameState.health==0) {
 						gameState.scene='gameover';
-						loserSound();
+						soundEffect('Losers.mp3');
 					} else {
-						dohSound();
+						soundEffect('Doh.mp3');
 					}
 					gameState.collide = true;
         }
@@ -206,36 +206,8 @@ This file has been modified for PA02.
 			//console.dir(npc);
 			//playGameMusic();
 	}
-	function dohSound(){             // sound whenever you lose health
-	  doh = new THREE.AudioListener();
-	  scene.add( doh );
-
-	  var homer = new THREE.Audio( doh );
-	  // global audio source
-	  var homerLoader = new THREE.AudioLoader();
-	  homerLoader.load( 'sounds/Doh.mp3', function(buffer){
-	    homer.setBuffer( buffer );
-	    homer.setLoop( false );
-	    homer.setVolume( 0.20 );
-	    homer.play();
-	  });
-	}
 
 
-	function loserSound(){             // sound when you lose
-	  loooser = new THREE.AudioListener();
-	  scene.add( doh );
-
-	  var loser = new THREE.Audio( loooser );
-	  // global audio source
-	  var loserLoader = new THREE.AudioLoader();
-	  homerLoader.load( 'sounds/Loser.mp3', function(buffer){
-	    loser.setBuffer( buffer );
-	    loser.setLoop( false );
-	    loser.setVolume( 0.20 );
-	    loser.play();
-	  });
-	}
 
 	/*
 		Produces a random number to set a random location
@@ -531,6 +503,42 @@ This file has been modified for PA02.
 
 
 
+	function dohSound(file){             // sound whenever you lose health
+		// create an AudioListener and add it to the camera
+		var listener = new THREE.AudioListener();
+		camera.add( listener );
+
+		var doh = new THREE.Audio(listener);
+
+		var audioLoader = new THREE.AudioLoader();
+		audioLoader.load( '../sounds/'+file, function( buffer ) {
+			doh.setBuffer( buffer );
+			doh.setLoop( false );
+			doh.setVolume( 0.5 );
+			doh.play();
+		});
+	}
+
+
+
+	function loserSound(file){             // sound when you lose
+
+		var loooser = new THREE.AudioListener();
+		camera.add( loooser );
+
+		var loser = new THREE.Audio( loooser );
+		// global audio source
+		var loserLoader = new THREE.AudioLoader();
+		loserLoader.load(  '../sounds/'+file, function( buffer ){
+			loser.setBuffer( buffer );
+			loser.setLoop( false );
+			loser.setVolume( 0.50 );
+			loser.play();
+		});
+	}
+
+
+
 
 	var clock;
 
@@ -559,6 +567,7 @@ This file has been modified for PA02.
 		if (gameState.scene == 'youwon' && event.key=='r') {
 			gameState.scene = 'main';
 			gameState.score = 0;
+			gameState.health = 10;
 			addBalls();
 			return;
 		}
@@ -567,6 +576,7 @@ This file has been modified for PA02.
 		if (gameState.scene == 'gameover' && event.key=='r') {
 			gameState.scene = 'main';
 			gameState.score = 0;
+			gameState.health = 10;
 			addBalls();
 			return;
 		}
