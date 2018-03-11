@@ -127,6 +127,7 @@ This file has been modified for PA02.
 	function createEndScene2(){
 		endScene2 = initScene();
 		endText2 = createSkyBox('gameover.png',10);
+	//	soundEffect('Losers.mp3');
 		endScene2.add(endText2);
 
 		// lights
@@ -252,7 +253,7 @@ This file has been modified for PA02.
 			)
 		}
 	}
-	
+
 	//Make red balls that kill the player when the avatar touches them
 	function addBombs(){
 		var numBombs = 3;
@@ -267,8 +268,9 @@ This file has been modified for PA02.
 			function( other_object, relative_velocity, relative_rotation, contact_normal ) {
 				if(other_object == avatar){
 					gameState.scene='gameover';
+					soundEffect('Losers.mp3');
 				}
-			}	
+			}
 		)
 	}
 
@@ -560,6 +562,7 @@ This file has been modified for PA02.
 
 		// This is in case of Game Over
 		if (gameState.scene == 'gameover' && event.key=='r') {
+		//	soundEffect('Losers.mp3');
 			gameState.scene = 'main';
 			gameState.score = 0;
 			gameState.health = 10;
