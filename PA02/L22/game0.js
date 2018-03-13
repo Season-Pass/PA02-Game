@@ -674,6 +674,8 @@ This file has been modified for PA02.
     if (controls.reset){
       avatar.__dirtyPosition = true;
       avatar.position.set(40,10,40);
+	  avatar.__dirtyRotation = true;
+      avatar.rotation.set(0,0,0);
     }
 	}
 
