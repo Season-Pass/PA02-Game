@@ -687,9 +687,11 @@ This file has been modified for PA02.
 			avatar.setAngularVelocity(new THREE.Vector3(0,-controls.speed*0.1,0));
 		}
 
-    if (controls.reset){
+    if (controls.reset){   //Changed so that it also resets rotation so player can get unstuck-Victor
       avatar.__dirtyPosition = true;
       avatar.position.set(40,10,40);
+	  avatar.__dirtyRotation = true;
+      avatar.rotation.set(0,0,0);
     }
 	}
 
