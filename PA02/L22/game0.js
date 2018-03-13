@@ -164,8 +164,7 @@ This file has been modified for PA02.
 			scene.add(ground);
 			var skybox = createSkyBox('sky.jpg',1);
 			scene.add(skybox);
-			var barrier = createBarrier();
-			scene.add(barrier);
+			createBarrier();
 
 			// create the avatar
 			createAvatar2(); // attempt at loading suzanne
@@ -382,25 +381,39 @@ This file has been modified for PA02.
 
 
 
+	function createBarrier(){
+		createPlane(0, -80, 0);
+		createPlane(0, 80, 0);
+		createPlane(-80, 0, 90);
+		createPlane(80, 0, 90);
+		createPlane(-56.57, -56.57, 45);
+		createPlane(-56.57, 56.57, -45);
+		createPlane(56.57, 56.57, 45);
+		createPlane(56.57, -56.57, -45);
+	}
+
+
+
 	/*
 		Creates a boundry to prevent objects from leaving the game area
 		and falling off the edge.
-		-Nadia Kubatin
 	*/
-	function createBarrier(){
-		var geometry2 = new THREE.CylinderGeometry(81, 79, 20, 80, 80, true);
+	function createPlane(x,z,rotation){
+		var geometry2 = new THREE.PlaneGeometry( 66.5, 10, 128 );
 		var material2 = new THREE.MeshPhongMaterial( {
                           color: 0xcce6ff,
                           transparent: true,
-                          opacity: 0,
+                          opacity: 1,
                           shininess: 100,
                           reflectivity: .5,
                           side:THREE.DoubleSide
                         } );
 		var pmaterial = new Physijs.createMaterial(material2,0.9,0.5);
-		var mesh2 = new Physijs.ConcaveMesh( geometry2, pmaterial, 0 );
-		mesh2.receiveShadow = false;
-		return mesh2;
+		var mesh = new Physijs.BoxMesh( geometry2, pmaterial, 0 );
+		mesh.position.x = x;
+		mesh.position.z = z;
+		mesh.rotation.y = THREE.Math.degToRad( rotation );
+		scene.add(mesh);
 	}
 
 
