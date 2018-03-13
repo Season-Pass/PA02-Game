@@ -29,6 +29,7 @@ This file has been modified for PA02.
 	// game scenes
 	var endScene, endCamera, endText;
 	var endScene2, endCamera2, endText2;
+	var startScene, startCamera, startText;
 
 	// game elements
 	var controls =
@@ -36,7 +37,7 @@ This file has been modified for PA02.
 				speed:10, fly:false, reset:false,
 		    camera:camera}
 	var gameState =
-	     {score:0, health:10, scene:'main', camera:'none', collide:false }
+	     {score:0, health:10, scene:'start', camera:'none', collide:false }
 
 
 
@@ -57,6 +58,7 @@ This file has been modified for PA02.
 	function init(){
 			initPhysijs();
 			scene = initScene();
+			createStartScene();
 			createEndScene();
 			createEndScene2();
 			initRenderer();
@@ -103,6 +105,21 @@ This file has been modified for PA02.
 	/*
 		Creates the you win screen for when you win the game
 	*/
+	function createStartScene(){   //
+		startScene = initScene();
+		startText = createSkyBox('startscene.png', 10)
+		startScene.add(startText);
+		
+		// lights
+		var light3 = createPointLight();
+		light3.position.set(0,200,20);
+		startScene.add(light3);
+
+		// camera
+		startCamera = new THREE.PerspectiveCamera( 90, window.innerWidth / window.innerHeight, 0.1, 1000 );
+		startCamera.position.set(0,50,1);
+		startCamera.lookAt(0,0,0);
+	}
 	function createEndScene(){
 		endScene = initScene();
 		endText = createSkyBox('youwon.png',10);
@@ -559,7 +576,15 @@ This file has been modified for PA02.
 			addBombs();
 			return;
 		}
-
+		//start screen
+		if (gameState.scene == 'start' && event.key=='p') {
+			gameState.scene = 'main';
+			gameState.score = 0;
+			gameState.health = 10;
+			addBalls();
+			addBombs();
+			return;
+		}
 		// This is in case of Game Over
 		if (gameState.scene == 'gameover' && event.key=='r') {
 		//	soundEffect('Losers.mp3');
@@ -680,7 +705,7 @@ This file has been modified for PA02.
 	  avatar.__dirtyRotation = true;
       avatar.rotation.set(0,0,0);
     }
-	}
+  }
 
 
 
@@ -697,7 +722,11 @@ This file has been modified for PA02.
 				//endText.rotateY(0.005);
 				renderer.render( endScene, endCamera );
 				break;
-
+				
+			case "start":
+				renderer.render( startScene, startCamera );
+				break;
+				
 			case "gameover":
 				//endText2.rotateY(0.005);
 				renderer.render( endScene2, endCamera2 );
