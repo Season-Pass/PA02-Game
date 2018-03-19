@@ -29,11 +29,11 @@ This file has been modified for PA02.
 	// game scenes
 	var endScene, endCamera, endText;
 	var endScene2, endCamera2, endText2;
-<<<<<<< HEAD
+
 	var startScreen, startCam, startText;
-=======
+
 	var startScene, startCamera, startText;
->>>>>>> 0b0b6975098953d3c1c61435532697ccfea75a73
+
 
 	// game elements
 	var controls =
