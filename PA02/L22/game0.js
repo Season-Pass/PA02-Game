@@ -26,6 +26,10 @@ This file has been modified for PA02.
 	// might be erased later
 	var avatar, suzanne, loader;
 
+	//bullet array
+	var bullets = [];
+	//var canShoot = 0;
+
 	// game scenes
 	var endScene, endCamera, endText;
 	var endScene2, endCamera2, endText2;
@@ -114,7 +118,7 @@ This file has been modified for PA02.
 		startScene = initScene();
 		startText = createSkyBox('startscene.png', 10)
 		startScene.add(startText);
-		
+
 		// lights
 		var light3 = createPointLight();
 		light3.position.set(0,200,20);
@@ -648,6 +652,8 @@ This file has been modified for PA02.
           console.log("space!!");
           break;
       case "h": controls.reset = true; break;
+			//fire bullet command
+			case "l": /*if(canShoot < 1){ fireBullet(); }*/ fireBullet(); break;
 
 			// switch cameras
 			case "1": gameState.camera = camera; break;
@@ -760,11 +766,11 @@ This file has been modified for PA02.
 				//endText.rotateY(0.005);
 				renderer.render( endScene, endCamera );
 				break;
-				
+
 			case "start":
 				renderer.render( startScene, startCamera );
 				break;
-				
+
 			case "gameover":
 				//endText2.rotateY(0.005);
 				renderer.render( endScene2, endCamera2 );
@@ -788,7 +794,15 @@ This file has been modified for PA02.
 			  console.log("don't know the scene "+gameState.scene);
 		}
 
-
+		//bullet array
+		for(var i = 0; i < bullets.length; i+= 1){
+			if(bullets[i] == undefined) continue;
+			if(bullets[i].alive == false){
+				bullets.splice(i,1);
+				continue;
+			}
+			bullets[i].position.add(bullets[i].velocity);
+		}
 
 		//draw heads up display ..
 	  var info = document.getElementById("info");
@@ -797,4 +811,46 @@ This file has been modified for PA02.
     + " health="+gameState.health
     + '</div>';
 
+	}
+
+	/* main function for bullet. allows avatar to fire bullet from self
+	* - bullets also within code for initial variables, and functions keydown and animate
+	* to be added:
+	*			collision between bullet and npc (spawn more npcs?)
+	*			delay between firing so players can't spam bullets
+	*			help used from : https://github.com/saucecode/threejs-demos/tree/master/09_Shooting
+	*-K
+	*/
+	function fireBullet(){
+		//creation of bullet
+		var bullet = new THREE.Mesh(
+			new THREE.SphereGeometry( 0.75, 8, 8 ),
+			new THREE.MeshBasicMaterial( {color: 0xffffff} )
+		);
+		bullet.setVisible = true;
+
+		//position and direction of bullet
+		bullet.position.set(avatar.position.x, avatar.position.y, avatar.position.z);
+
+		//creates 3 dimensional vector which gets the direction that the avatar is facing (*very much NOT equivalent to avatarCam as i have learnt)
+		var direction = new THREE.Vector3();
+		direction = avatar.getWorldDirection();
+		//bullet fires in direction of avatar
+		bullet.velocity = direction;
+
+		bullet.alive = true; //bullet status
+		setTimeout(
+			function (){
+				bullet.alive = false;
+				scene.remove(bullet); //removes from screen after 1000 ms or 1s
+			},1000 );
+
+		//add bullet to bullets array (note: originally in the source code linked to make it so that only
+		//one bullet could be on the screen at any time. the array is left in there for that purpose
+		//but i have yet to add that functionality)
+		bullets.push(bullet); //puts bullet into bullet array
+
+		//add bullet to scene
+		scene.add( bullet );
+		//canShoot = 10; //(resets to 10 (ms?) delay before being able to fire again)
 	}
