@@ -29,7 +29,11 @@ This file has been modified for PA02.
 	// game scenes
 	var endScene, endCamera, endText;
 	var endScene2, endCamera2, endText2;
+<<<<<<< HEAD
 	var startScreen, startCam, startText;
+=======
+	var startScene, startCamera, startText;
+>>>>>>> 0b0b6975098953d3c1c61435532697ccfea75a73
 
 	// game elements
 	var controls =
@@ -58,6 +62,7 @@ This file has been modified for PA02.
 	function init(){
 			initPhysijs();
 			scene = initScene();
+			createStartScene();
 			createEndScene();
 			createEndScene2();
 			createStartScreen();
@@ -105,6 +110,21 @@ This file has been modified for PA02.
 	/*
 		Creates the you win screen for when you win the game
 	*/
+	function createStartScene(){   //
+		startScene = initScene();
+		startText = createSkyBox('startscene.png', 10)
+		startScene.add(startText);
+		
+		// lights
+		var light3 = createPointLight();
+		light3.position.set(0,200,20);
+		startScene.add(light3);
+
+		// camera
+		startCamera = new THREE.PerspectiveCamera( 90, window.innerWidth / window.innerHeight, 0.1, 1000 );
+		startCamera.position.set(0,50,1);
+		startCamera.lookAt(0,0,0);
+	}
 	function createEndScene(){
 		endScene = initScene();
 		endText = createSkyBox('youwon.png',10);
@@ -129,6 +149,7 @@ This file has been modified for PA02.
 	function createEndScene2(){
 		endScene2 = initScene();
 		endText2 = createSkyBox('gameover.png',10);
+	//	soundEffect('Losers.mp3');
 		endScene2.add(endText2);
 
 		// lights
@@ -179,8 +200,7 @@ This file has been modified for PA02.
 			scene.add(ground);
 			var skybox = createSkyBox('sky.jpg',1);
 			scene.add(skybox);
-			var barrier = createBarrier();
-			scene.add(barrier);
+			createBarrier();
 
 			// create the avatar
 			createAvatar2(); // attempt at loading suzanne
@@ -268,7 +288,7 @@ This file has been modified for PA02.
 			)
 		}
 	}
-	
+
 	//Make red balls that kill the player when the avatar touches them
 	function addBombs(){
 		var numBombs = 3;
@@ -288,7 +308,6 @@ This file has been modified for PA02.
 				}	
 			)
 		}
-		
 	}
 
 
@@ -399,25 +418,39 @@ This file has been modified for PA02.
 
 
 
+	function createBarrier(){
+		createPlane(0, -80, 0);
+		createPlane(0, 80, 0);
+		createPlane(-80, 0, 90);
+		createPlane(80, 0, 90);
+		createPlane(-56.57, -56.57, 45);
+		createPlane(-56.57, 56.57, -45);
+		createPlane(56.57, 56.57, 45);
+		createPlane(56.57, -56.57, -45);
+	}
+
+
+
 	/*
 		Creates a boundry to prevent objects from leaving the game area
 		and falling off the edge.
-		-Nadia Kubatin
 	*/
-	function createBarrier(){
-		var geometry2 = new THREE.CylinderGeometry(81, 79, 20, 80, 80, true);
+	function createPlane(x,z,rotation){
+		var geometry2 = new THREE.PlaneGeometry( 66.5, 10, 128 );
 		var material2 = new THREE.MeshPhongMaterial( {
                           color: 0xcce6ff,
                           transparent: true,
-                          opacity: 0,
+                          opacity: 1,
                           shininess: 100,
                           reflectivity: .5,
                           side:THREE.DoubleSide
                         } );
 		var pmaterial = new Physijs.createMaterial(material2,0.9,0.5);
-		var mesh2 = new Physijs.ConcaveMesh( geometry2, pmaterial, 0 );
-		mesh2.receiveShadow = false;
-		return mesh2;
+		var mesh = new Physijs.BoxMesh( geometry2, pmaterial, 0 );
+		mesh.position.x = x;
+		mesh.position.z = z;
+		mesh.rotation.y = THREE.Math.degToRad( rotation );
+		scene.add(mesh);
 	}
 
 
@@ -576,9 +609,18 @@ This file has been modified for PA02.
 			addBombs();
 			return;
 		}
-
+		//start screen
+		if (gameState.scene == 'start' && event.key=='p') {
+			gameState.scene = 'main';
+			gameState.score = 0;
+			gameState.health = 10;
+			addBalls();
+			addBombs();
+			return;
+		}
 		// This is in case of Game Over
 		if (gameState.scene == 'gameover' && event.key=='r') {
+		//	soundEffect('Losers.mp3');
 			gameState.scene = 'main';
 			gameState.score = 0;
 			gameState.health = 10;
@@ -695,11 +737,13 @@ This file has been modified for PA02.
 			avatar.setAngularVelocity(new THREE.Vector3(0,-controls.speed*0.1,0));
 		}
 
-    if (controls.reset){
+    if (controls.reset){   //Changed so that it also resets rotation so player can get unstuck-Victor
       avatar.__dirtyPosition = true;
       avatar.position.set(40,10,40);
+	  avatar.__dirtyRotation = true;
+      avatar.rotation.set(0,0,0);
     }
-	}
+  }
 
 
 
@@ -716,7 +760,11 @@ This file has been modified for PA02.
 				//endText.rotateY(0.005);
 				renderer.render( endScene, endCamera );
 				break;
-
+				
+			case "start":
+				renderer.render( startScene, startCamera );
+				break;
+				
 			case "gameover":
 				//endText2.rotateY(0.005);
 				renderer.render( endScene2, endCamera2 );
