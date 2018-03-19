@@ -29,6 +29,7 @@ This file has been modified for PA02.
 	// game scenes
 	var endScene, endCamera, endText;
 	var endScene2, endCamera2, endText2;
+	var startScreen, startCam, startText;
 
 	// game elements
 	var controls =
@@ -36,7 +37,7 @@ This file has been modified for PA02.
 				speed:10, fly:false, reset:false,
 		    camera:camera}
 	var gameState =
-	     {score:0, health:10, scene:'main', camera:'none', collide:false }
+	     {score:0, health:10, scene:'start', camera:'none', collide:false }
 
 
 
@@ -59,6 +60,7 @@ This file has been modified for PA02.
 			scene = initScene();
 			createEndScene();
 			createEndScene2();
+			createStartScreen();
 			initRenderer();
 			createMainScene();
 	}
@@ -139,7 +141,21 @@ This file has been modified for PA02.
 		endCamera2.position.set(0,50,1);
 		endCamera2.lookAt(0,0,0);
 	}
-
+	
+	//Create start screen
+	function createStartScreen(){
+		startScreen = initScene();
+		var startText = createSkyBox('PressP.png',10);
+		startScreen.add(startText);
+		
+		var light3 = createPointLight();
+		light3.position.set(0,200,20);
+		startScreen.add(light3);
+		
+		startCam = new THREE.PerspectiveCamera( 90, window.innerWidth / window.innerHeight, 0.1, 1000 );
+		startCam.position.set(0,50,1);
+		startCam.lookAt(0,0,0);
+	}
 
 
 	/*
@@ -261,15 +277,18 @@ This file has been modified for PA02.
 			bomb.material.color.setHex(0xcd0000);
 			bomb.position.set(randN(20)+15,30,randN(20)+15);
 			scene.add(bomb);
+			
+			//kill avatar when it collides with a bomb
+			bomb.addEventListener( 'collision',
+				function( other_object, relative_velocity, relative_rotation, contact_normal ) {
+					if(other_object == avatar){
+						gameState.health = 0;
+						gameState.scene='gameover';
+					}
+				}	
+			)
 		}
-		//kill avatar
-		bomb.addEventListener( 'collision',
-			function( other_object, relative_velocity, relative_rotation, contact_normal ) {
-				if(other_object == avatar){
-					gameState.scene='gameover';
-				}
-			}	
-		)
+		
 	}
 
 
@@ -567,6 +586,11 @@ This file has been modified for PA02.
 			addBombs();
 			return;
 		}
+		
+		//start game
+		if (gameState.scene == 'start' && event.key == 'p') {
+			gameState.scene = 'main';
+		}
 
 		// this is the regular scene
 		switch (event.key){
@@ -707,7 +731,11 @@ This file has been modified for PA02.
 					renderer.render( scene, gameState.camera );
 				}
 				break;
-
+			
+			case "start":
+				renderer.render(startScreen, startCam);
+				break;
+				
 			default:
 			  console.log("don't know the scene "+gameState.scene);
 		}
