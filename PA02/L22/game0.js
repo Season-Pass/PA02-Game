@@ -1,4 +1,3 @@
-
 /*
 Game 0
 This is a ThreeJS program which implements a simple game
@@ -26,10 +25,6 @@ This file has been modified for PA02.
 	// might be erased later
 	var avatar, suzanne, loader;
 
-	//bullet array
-	var bullets = [];
-	//var canShoot = 0;
-
 	// game scenes
 	var endScene, endCamera, endText;
 	var endScene2, endCamera2, endText2;
@@ -37,6 +32,11 @@ This file has been modified for PA02.
 	var startScreen, startCam, startText;
 
 	var startScene, startCamera, startText;
+
+
+	//bullet array
+	var bullets = [];
+	//var canShoot = 0;
 
 
 	// game elements
@@ -166,17 +166,17 @@ This file has been modified for PA02.
 		endCamera2.position.set(0,50,1);
 		endCamera2.lookAt(0,0,0);
 	}
-	
+
 	//Create start screen
 	function createStartScreen(){
 		startScreen = initScene();
 		var startText = createSkyBox('PressP.png',10);
 		startScreen.add(startText);
-		
+
 		var light3 = createPointLight();
 		light3.position.set(0,200,20);
 		startScreen.add(light3);
-		
+
 		startCam = new THREE.PerspectiveCamera( 90, window.innerWidth / window.innerHeight, 0.1, 1000 );
 		startCam.position.set(0,50,1);
 		startCam.lookAt(0,0,0);
@@ -301,7 +301,7 @@ This file has been modified for PA02.
 			bomb.material.color.setHex(0xcd0000);
 			bomb.position.set(randN(20)+15,30,randN(20)+15);
 			scene.add(bomb);
-			
+
 			//kill avatar when it collides with a bomb
 			bomb.addEventListener( 'collision',
 				function( other_object, relative_velocity, relative_rotation, contact_normal ) {
@@ -309,7 +309,7 @@ This file has been modified for PA02.
 						gameState.health = 0;
 						gameState.scene='gameover';
 					}
-				}	
+				}
 			)
 		}
 	}
@@ -632,7 +632,7 @@ This file has been modified for PA02.
 			addBombs();
 			return;
 		}
-		
+
 		//start game
 		if (gameState.scene == 'start' && event.key == 'p') {
 			gameState.scene = 'main';
@@ -785,11 +785,11 @@ This file has been modified for PA02.
 					renderer.render( scene, gameState.camera );
 				}
 				break;
-			
+
 			case "start":
 				renderer.render(startScreen, startCam);
 				break;
-				
+
 			default:
 			  console.log("don't know the scene "+gameState.scene);
 		}
@@ -827,7 +827,6 @@ This file has been modified for PA02.
 			new THREE.SphereGeometry( 0.75, 8, 8 ),
 			new THREE.MeshBasicMaterial( {color: 0xffffff} )
 		);
-		bullet.setVisible = true;
 
 		//position and direction of bullet
 		bullet.position.set(avatar.position.x, avatar.position.y, avatar.position.z);
