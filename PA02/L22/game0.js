@@ -207,14 +207,7 @@ This file has been modified for PA02.
 			createBarrier();
 
 			// create the avatar
-			createAvatar2(); // attempt at loading suzanne
-			avatarCam = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 0.1, 1000 );
-			avatar = createAvatar();
-			avatar.translateY(20);
-			avatarCam.translateY(-4);
-			avatarCam.translateZ(3);
-			scene.add(avatar);
-			gameState.camera = avatarCam;
+			createAvatar();
 
 			// second camera
       edgeCam = new THREE.PerspectiveCamera( 120, window.innerWidth / window.innerHeight, 0.1, 1000 );
@@ -421,7 +414,10 @@ This file has been modified for PA02.
 	}
 
 
-
+	/*
+		Creates a boundry to prevent objects from leaving the game area
+		and falling off the edge.
+	*/
 	function createBarrier(){
 		createPlane(0, -80, 0);
 		createPlane(0, 80, 0);
@@ -436,8 +432,7 @@ This file has been modified for PA02.
 
 
 	/*
-		Creates a boundry to prevent objects from leaving the game area
-		and falling off the edge.
+		Creates a single plane for use in boundry.
 	*/
 	function createPlane(x,z,rotation){
 		var geometry2 = new THREE.PlaneGeometry( 66.5, 10, 128 );
@@ -460,57 +455,32 @@ This file has been modified for PA02.
 
 
 	/*
-		Creates an avatar for the game
+		Creates the avatar for the game.
+		It uses the suzanne model.
 	*/
 	function createAvatar(){
-		var geometry = new THREE.BoxGeometry( 5, 5, 6);
-		var material = new THREE.MeshLambertMaterial( { color: 0xffff00} );
-		var pmaterial = new Physijs.createMaterial(material,0.9,0.5);
-		var mesh = new Physijs.BoxMesh( geometry, pmaterial );
-		mesh.setDamping(0.1,0.1);
-		mesh.castShadow = true;
-
-		// create a camera on the avatar
-		avatarCam.position.set(0,4,0);
-		avatarCam.lookAt(0,4,10);
-		mesh.add(avatarCam);
-		return mesh;
-	}
-
-
-
-	/*
-		The attempt at loading Suzanne.
-		Load was a success but I do not know how to make it the avatar
-		- Nadia
-	*/
-	function createAvatar2(){
 		loader = new THREE.JSONLoader();
-		suzanne = loader.load("../models/suzanne.json",
+		loader.load("../models/suzanne.json",
 		function (geometry, materials){
 			var material = new THREE.MeshLambertMaterial( { color: 0x00ff00 } );
 			var pmaterial = new Physijs.createMaterial(material,0.9,0.5);
 			suzanne = new Physijs.BoxMesh( geometry, pmaterial );
-			suzanne.setDamping(0.1,0.1);
-			console.log(JSON.stringify(suzanne.scale));
-			var s = 0.5;
-						suzanne.scale.y=s;
-						suzanne.scale.x=s;
-						suzanne.scale.z=s;
-						suzanne.position.z = -5;
-						suzanne.position.y = 3;
-						suzanne.position.x = -5;
+
+			avatarCam = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 0.1, 1000 );
+			gameState.camera = avatarCam;
+
+			avatarCam.position.set(0,6,-15);
+			avatarCam.lookAt(0,4,10);
+			suzanne.add(avatarCam);
+			suzanne.position.set(-40,20,-40);
 			suzanne.castShadow = true;
-			scene.add(suzanne);
-			//avatarCam.position.set(0,4,0);
-			//avatarCam.lookAt(0,4,10);
-			//suzanne.add(avatarCam);
+			scene.add( suzanne  );
+			avatar=suzanne;
+
 		}, function(xhr){
 						console.log( (xhr.loaded / xhr.total * 100) + '% loaded' );},
 			function(err){console.log("error in loading: "+err);}
 		);
-		//return object = loader.parse("../models/suzanne.json");
-		//loader.load("../models/suzanne.json", suzanne);
 	}
 
 
