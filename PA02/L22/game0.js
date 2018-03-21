@@ -299,6 +299,7 @@ This file has been modified for PA02.
 			bomb.addEventListener( 'collision',
 				function( other_object, relative_velocity, relative_rotation, contact_normal ) {
 					if(other_object == avatar){
+						soundEffect('Losers.mp3');
 						gameState.health = 0;
 						gameState.scene='gameover';
 					}
