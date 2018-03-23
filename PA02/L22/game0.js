@@ -111,7 +111,7 @@ This file has been modified for PA02.
 
 
 
-	
+
 	function createStartScene(){   //created start scene - Victor
 		startScene = initScene();
 		startText = createSkyBox('startscene.png', 10)
@@ -125,7 +125,7 @@ This file has been modified for PA02.
 		// camera
 		startCamera = new THREE.PerspectiveCamera( 90, window.innerWidth / window.innerHeight, 0.1, 1000 );
 		startCamera.position.set(0,50,1);
-		startCamera.lookAt(0,0,0);	
+		startCamera.lookAt(0,0,0);
 	}
 	/*
 		Creates the you win screen for when you win the game
